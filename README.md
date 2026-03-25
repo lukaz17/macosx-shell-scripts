@@ -13,3 +13,7 @@ if [ -d "$HOME/bin" ]; then
     export PATH="$HOME/bin:$PATH"
 fi
 ```
+
+## License
+
+MacOSX Shell Scripts is licensed under MIT license. See LICENSE file and NOTICE file for more details.
