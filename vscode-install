@@ -91,16 +91,6 @@ if [ -f "${ACTIVE_TARGET}" ] || [ -d "${ACTIVE_TARGET}" ] || [ -L "${ACTIVE_TARG
 fi
 cp -r -P "${INSTALL_TARGET}" "${ACTIVE_TARGET}"
 
-# Create symlink for quick access
-ACTIVE_TARGET_BIN="${ACTIVE_TARGET}/${PROGRAM_EXEC}"
-SYSTEM_BIN_TARGET_BIN="${SYSTEM_BIN_ROOT}/${PROGRAM_EXEC}"
-if [ -f "${ACTIVE_TARGET_BIN}" ] || [ -d "${ACTIVE_TARGET_BIN}" ]; then
-	if [ -f "${SYSTEM_BIN_TARGET_BIN}" ] || [ -d "${SYSTEM_BIN_TARGET_BIN}" ] || [ -L "${SYSTEM_BIN_TARGET_BIN}" ]; then
-		rm -r "${SYSTEM_BIN_TARGET_BIN}"
-	fi
-	ln -s "${ACTIVE_TARGET_BIN}" "${SYSTEM_BIN_TARGET_BIN}"
-fi
-
 # Create desktop symlink for quick access
 ACTIVE_TARGET_BIN="${ACTIVE_TARGET}/${PROGRAM_EXEC}"
 DESKTOP_BIN_TARGET_BIN="${DESKTOP_BIN_ROOT}/${PROGRAM_EXEC}"
