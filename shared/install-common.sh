@@ -341,6 +341,9 @@ extract_archive() {
 		hdiutil detach "${MOUNT_POINT}"
 		echo "> Unmount Dmg:  ${BIN_ARCH_TMP_FILE}"
 		xattr -cr "${TEMP_TARGET}"
+	elif [ "${_archive_type}" = "pkg" ] || [ "${_archive_type}" = "PKG" ]; then
+		remove_item "${_destination_dir}"
+		pkgutil --expand-full "${_archive_file}" "${_destination_dir}"
 	elif [ "${_archive_type}" = "tar" ] || [ "${_archive_type}" = "TAR" ]; then
 		tar -x -v -f "${_archive_file}" -C "${_destination_dir}"
 	elif [ "${_archive_type}" = "zip" ] || [ "${_archive_type}" = "ZIP" ]; then
