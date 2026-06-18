@@ -10,6 +10,8 @@
 #
 ################################################################################
 
+set +x
+
 # ------------------------------------------------------------------------------
 # Create a directory safely
 # ------------------------------------------------------------------------------
@@ -21,6 +23,7 @@ create_dir() {
 	fi
 
 	if [ ! -d "${_path}" ]; then
+		echo "> Create Dir:   ${_path}"
 		mkdir -p "${_path}"
 	fi
 }
@@ -36,6 +39,7 @@ remove_item() {
 	fi
 
 	if [ -f "${_path}" ] || [ -d "${_path}" ] || [ -L "${_path}" ]; then
+		echo "> Remove Item:  ${_path}"
 		rm -r "${_path}"
 	fi
 }
@@ -51,6 +55,7 @@ copy_item() {
 		return 1
 	fi
 
+	echo "> Copy Item:    ${_from} -> ${_to}"
 	cp -r -P "${_from}" "${_to}"
 }
 
@@ -66,6 +71,7 @@ copy_item_overwrite() {
 	fi
 
 	remove_item "${_to}"
+	echo "> Copy Item:    ${_from} -> ${_to}"
 	cp -r -P "${_from}" "${_to}"
 }
 
@@ -80,6 +86,7 @@ move_item() {
 		return 1
 	fi
 
+	echo "> Move Item:    ${_from} -> ${_to}"
 	mv "${_from}" "${_to}"
 }
 
@@ -95,6 +102,7 @@ move_item_overwrite() {
 	fi
 
 	remove_item "${_to}"
+	echo "> Move Item:    ${_from} -> ${_to}"
 	mv "${_from}" "${_to}"
 }
 
@@ -109,6 +117,7 @@ symlink_item() {
 		return 1
 	fi
 
+	echo "> Link Item:    ${_from} -> ${_to}"
 	ln -s "${_from}" "${_to}"
 }
 
@@ -124,6 +133,7 @@ symlink_item_overwrite() {
 	fi
 
 	remove_item "${_to}"
+	echo "> Link Item:    ${_from} -> ${_to}"
 	ln -s "${_from}" "${_to}"
 }
 
@@ -138,6 +148,7 @@ make_executable() {
 	fi
 
 	if [ -f "${_path}" ] || [ -d "${_path}" ]; then
+		echo "> Make Exec:    ${_path}"
 		chmod +x "${_path}"
 	fi
 }
@@ -181,6 +192,7 @@ get_install_version_from_github() {
 		INSTALL_VERSION="${_fallback_version}"
 	fi
 	normalize_install_version
+	echo "> Latest Version:  ${INSTALL_VERSION}"
 }
 
 # ------------------------------------------------------------------------------
@@ -193,6 +205,8 @@ init_install_env() {
 		echo "init_install_env: Invalid arguments"
 		return 1
 	fi
+
+	echo "> Init InstEnv: ${_program_id} v${_install_version} $(uname -m)"
 
 	_user_id="$(id -u)"
 	if [ "${_user_id}" -eq 0 ]; then
@@ -255,12 +269,14 @@ download_uri_per_arch() {
 			echo "download_uri_per_arch: Unsupported architecture: ${_arch}"
 			exit 1
 		fi
+		echo "> Download Uri: ${_amd64_url} -> ${_destination}"
 		curl -fSL "${_amd64_url}" -o "${_destination}"
 	elif [ "${_arch}" = "aarch64" ] || [ "${_arch}" = "arm64" ]; then
 		if [ -z "${_arm64_url}" ]; then
 			echo "download_uri_per_arch: Unsupported architecture: ${_arch}"
 			exit 1
 		fi
+		echo "> Download Uri: ${_arm64_url} -> ${_destination}"
 		curl -fSL "${_arm64_url}" -o "${_destination}"
 	else
 		echo "download_uri_per_arch: Unsupported architecture: ${_arch}"
@@ -315,11 +331,15 @@ extract_archive() {
 		return 1
 	fi
 
+	echo "> Extract Arch: ${_archive_file} -> ${_destination_dir}"
+
 	if [ "${_archive_type}" = "dmg" ] || [ "${_archive_type}" = "DMG" ]; then
 		MOUNT_POINT="/Volumes/CLI Auto Install"
+		echo "> Mount Dmg:    ${BIN_ARCH_TMP_FILE}"
 		hdiutil attach -mountpoint "${MOUNT_POINT}" "${BIN_ARCH_TMP_FILE}"
 		copy_item "${MOUNT_POINT}/${PROGRAM_EXEC}" "${TEMP_TARGET}"
 		hdiutil detach "${MOUNT_POINT}"
+		echo "> Unmount Dmg:  ${BIN_ARCH_TMP_FILE}"
 		xattr -cr "${TEMP_TARGET}"
 	elif [ "${_archive_type}" = "tar" ] || [ "${_archive_type}" = "TAR" ]; then
 		tar -x -v -f "${_archive_file}" -C "${_destination_dir}"
