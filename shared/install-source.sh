@@ -17,6 +17,7 @@ set +x
 # ------------------------------------------------------------------------------
 get_source_owner() {
 	case "$1" in
+		localai) echo "mudler" ;;
 		opencode) echo "anomalyco" ;;
 		*) echo "" ;;
 	esac
@@ -27,6 +28,7 @@ get_source_owner() {
 # ------------------------------------------------------------------------------
 get_source_repo() {
 	case "$1" in
+		localai) echo "LocalAI" ;;
 		opencode) echo "opencode" ;;
 		*) echo "" ;;
 	esac
@@ -37,6 +39,8 @@ get_source_repo() {
 # ------------------------------------------------------------------------------
 get_download_uri_amd64() {
 	case "$1" in
+		localai)
+			echo "" ;;
 		opencode)
 			echo "https://github.com/anomalyco/opencode/releases/download/v${2}/opencode-darwin-x64.zip" ;;
 		*) echo "" ;;
@@ -48,6 +52,8 @@ get_download_uri_amd64() {
 # ------------------------------------------------------------------------------
 get_download_uri_arm64() {
 	case "$1" in
+		localai)
+			echo "https://github.com/mudler/LocalAI/releases/download/v${2}/local-ai-v${2}-darwin-arm64" ;;
 		opencode)
 			echo "https://github.com/anomalyco/opencode/releases/download/v${2}/opencode-darwin-arm64.zip" ;;
 		*) echo "" ;;
