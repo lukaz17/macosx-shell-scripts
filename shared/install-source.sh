@@ -28,6 +28,7 @@ get_source_owner() {
 		pnpm) echo "pnpm" ;;
 		uv) echo "astral-sh" ;;
 		vscode) echo "microsoft" ;;
+		waterfox) echo "BrowserWorks" ;;
 		*) echo "" ;;
 	esac
 }
@@ -48,6 +49,7 @@ get_source_repo() {
 		pnpm) echo "pnpm" ;;
 		uv) echo "uv" ;;
 		vscode) echo "vscode" ;;
+		waterfox) echo "waterfox" ;;
 		*) echo "" ;;
 	esac
 }
@@ -87,6 +89,8 @@ get_download_uri_amd64() {
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-x86_64-apple-darwin.tar.gz" ;;
 		vscode)
 			echo "https://update.code.visualstudio.com/${_install_version}/darwin/stable" ;;
+		waterfox)
+			echo "https://cdn.waterfox.com/waterfox/releases/${_install_version}/Darwin_x86_64-aarch64/Waterfox%20${_install_version}.dmg" ;;
 		*) echo "" ;;
 	esac
 }
@@ -134,6 +138,8 @@ get_download_uri_arm64() {
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-aarch64-apple-darwin.tar.gz" ;;
 		vscode)
 			echo "https://update.code.visualstudio.com/${_install_version}/darwin-arm64/stable" ;;
+		waterfox)
+			echo "https://cdn.waterfox.com/waterfox/releases/${_install_version}/Darwin_x86_64-aarch64/Waterfox%20${_install_version}.dmg" ;;
 		*) echo "" ;;
 	esac
 }
