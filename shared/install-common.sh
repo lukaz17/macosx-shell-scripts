@@ -193,6 +193,92 @@ normalize_install_version() {
 }
 
 # ------------------------------------------------------------------------------
+# Compare two versions, print -1, 0 or 1 when the first is older, equal or newer:
+# - Missing release parts count as 0: 2 = 2.0 = 2.0.0.
+# - A pre-release is older than its release: 2.0.0-beta.1 < 2.0.0, 1.27rc1 < 1.27.0.
+# - Pre-releases compare digit runs as numbers: beta.2 < beta.10, rc9 < rc10.
+# ------------------------------------------------------------------------------
+compare_version() {
+	_version_left="${1}"
+	_version_right="${2}"
+	if [ -z "${_version_left}" ] || [ -z "${_version_right}" ]; then
+		echo "compare_version: Invalid arguments" >&2
+		return 1
+	fi
+
+	# macOS sort -V orders 2 < 2.0.0 and 2.0.0 < 2.0.0-beta.1, so compare explicitly
+	awk -v left="${_version_left}" -v right="${_version_right}" '
+		function order(x, y) {
+			return (x < y) ? -1 : ((x > y) ? 1 : 0)
+		}
+		function split_version(version, parts) {
+			sub(/^v/, "", version)
+			match(version, /^[0-9.]*/)
+			parts["release"] = substr(version, 1, RLENGTH)
+			parts["pre"] = substr(version, RLENGTH + 1)
+			sub(/^[-.]/, "", parts["pre"])
+		}
+		function order_release(x, y,    xs, ys, xn, yn, i, result) {
+			xn = split(x, xs, ".")
+			yn = split(y, ys, ".")
+			for (i = 1; i <= xn || i <= yn; i++) {
+				result = order(xs[i] + 0, ys[i] + 0)
+				if (result != 0) return result
+			}
+			return 0
+		}
+		function order_pre(x, y,    xt, yt, result) {
+			while (x != "" && y != "") {
+				match(x, /^([0-9]+|[^0-9]+)/)
+				xt = substr(x, 1, RLENGTH)
+				x = substr(x, RLENGTH + 1)
+				match(y, /^([0-9]+|[^0-9]+)/)
+				yt = substr(y, 1, RLENGTH)
+				y = substr(y, RLENGTH + 1)
+				if (xt ~ /^[0-9]/ && yt ~ /^[0-9]/) {
+					result = order(xt + 0, yt + 0)
+				} else {
+					result = order(xt "", yt "")
+				}
+				if (result != 0) return result
+			}
+			return order(x != "", y != "")
+		}
+		BEGIN {
+			split_version(left, lv)
+			split_version(right, rv)
+			result = order_release(lv["release"], rv["release"])
+			if (result == 0 && (lv["pre"] == "" || rv["pre"] == "")) {
+				result = order(lv["pre"] == "", rv["pre"] == "")
+			} else if (result == 0) {
+				result = order_pre(lv["pre"], rv["pre"])
+			}
+			print result
+		}
+	'
+}
+
+# ------------------------------------------------------------------------------
+# Check that the first version is not older than the second.
+# ------------------------------------------------------------------------------
+is_version_at_least() {
+	_version_to_check="${1}"
+	_version_anchor="${2}"
+	_version_order="$(compare_version "${_version_to_check}" "${_version_anchor}")" || return 1
+	[ "${_version_order}" -ge 0 ]
+}
+
+# ------------------------------------------------------------------------------
+# Check that the first version is not newer than the second.
+# ------------------------------------------------------------------------------
+is_version_at_most() {
+	_version_to_check="${1}"
+	_version_anchor="${2}"
+	_version_order="$(compare_version "${_version_to_check}" "${_version_anchor}")" || return 1
+	[ "${_version_order}" -le 0 ]
+}
+
+# ------------------------------------------------------------------------------
 # Get latest version from GitHub.
 # ------------------------------------------------------------------------------
 get_install_version_from_github() {
