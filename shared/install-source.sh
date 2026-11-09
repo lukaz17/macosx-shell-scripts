@@ -48,7 +48,11 @@ get_download_uri_amd64() {
 		localai)
 			echo "" ;;
 		opencode)
-			echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-x64.zip" ;;
+			if is_version_at_least "${_install_version}" "2"; then
+				echo "https://opencode.ai/files/bin/${_install_version}/opencode-darwin-x64.zip"
+			else
+				echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-x64.zip"
+			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-x86_64-apple-darwin.tar.gz" ;;
 		*) echo "" ;;
@@ -65,7 +69,11 @@ get_download_uri_arm64() {
 		localai)
 			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
 		opencode)
-			echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-arm64.zip" ;;
+			if is_version_at_least "${_install_version}" "2"; then
+				echo "https://opencode.ai/files/bin/${_install_version}/opencode-darwin-arm64.zip"
+			else
+				echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-arm64.zip"
+			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-aarch64-apple-darwin.tar.gz" ;;
 		*) echo "" ;;
