@@ -27,6 +27,26 @@ create_dir() {
 }
 
 # ------------------------------------------------------------------------------
+# Create a directory safely, owned by the invoking user when run with sudo.
+# ------------------------------------------------------------------------------
+create_user_dir() {
+	_path="${1}"
+	if [ -z "${_path}" ]; then
+		echo "create_user_dir: Invalid arguments" >&2
+		return 1
+	fi
+
+	if [ ! -d "${_path}" ]; then
+		echo "> Create Dir:   ${_path}"
+		if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER}" ]; then
+			sudo -u "${SUDO_USER}" mkdir -p "${_path}"
+		else
+			mkdir -p "${_path}"
+		fi
+	fi
+}
+
+# ------------------------------------------------------------------------------
 # Remove file/folder safely.
 # ------------------------------------------------------------------------------
 remove_item() {
@@ -224,9 +244,15 @@ init_install_env() {
 		SYSTEM_BIN_ROOT="${HOME}/.local/bin"
 	fi
 	TEMP_ROOT="/tmp"
+	USER_PROFILE_RC="${HOME}/.zprofile"
+	USER_BASH_RC="${HOME}/.zshrc"
+	USER_PROFILE_DATA="${HOME}/.local"
 
 	if [ -n "${CLIINST_USR_LOCAL_SHARE}" ]; then
 		INSTALL_ROOT="${CLIINST_USR_LOCAL_SHARE}/${_program_id}"
+	fi
+	if [ -n "${CLIINST_USR_PROFILE}" ]; then
+		USER_PROFILE_DATA="${CLIINST_USR_PROFILE}"
 	fi
 	if [ -n "${CLIINST_TMP}" ]; then
 		TEMP_ROOT="${CLIINST_TMP}"
@@ -238,6 +264,7 @@ init_install_env() {
 
 	create_dir "${INSTALL_ROOT}"
 	create_dir "${SYSTEM_BIN_ROOT}"
+	create_user_dir "${USER_PROFILE_DATA}"
 }
 
 # ------------------------------------------------------------------------------
