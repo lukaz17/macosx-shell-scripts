@@ -332,6 +332,7 @@ get_install_version_from_github() {
 init_install_env() {
 	_program_id="${1}"
 	_install_version="${2}"
+	_active_tag="${3}"
 	if [ -z "${_program_id}" ] || [ -z "${_install_version}" ]; then
 		echo "init_install_env: Invalid arguments" >&2
 		return 1
@@ -363,7 +364,8 @@ init_install_env() {
 	fi
 
 	INSTALL_TARGET="${INSTALL_ROOT}/${_program_id}-v${_install_version}"
-	ACTIVE_TARGET="${INSTALL_ROOT}/active-release"
+	DEFAULT_TARGET="${INSTALL_ROOT}/active-release"
+	ACTIVE_TARGET="${DEFAULT_TARGET}${_active_tag:+-${_active_tag}}"
 	TEMP_TARGET="${TEMP_ROOT}/${_program_id}-v${_install_version}"
 
 	create_dir "${INSTALL_ROOT}"
