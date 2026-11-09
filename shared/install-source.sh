@@ -19,6 +19,7 @@ get_source_owner() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		localai) echo "mudler" ;;
+		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
 		uv) echo "astral-sh" ;;
 		*) echo "" ;;
@@ -32,6 +33,7 @@ get_source_repo() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		localai) echo "LocalAI" ;;
+		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
 		uv) echo "uv" ;;
 		*) echo "" ;;
@@ -47,6 +49,8 @@ get_download_uri_amd64() {
 	case "${_program_id}" in
 		localai)
 			echo "" ;;
+		nodejs)
+			echo "https://nodejs.org/dist/v${_install_version}/node-v${_install_version}-darwin-x64.tar.gz" ;;
 		opencode)
 			if is_version_at_least "${_install_version}" "2"; then
 				echo "https://opencode.ai/files/bin/${_install_version}/opencode-darwin-x64.zip"
@@ -68,6 +72,12 @@ get_download_uri_arm64() {
 	case "${_program_id}" in
 		localai)
 			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
+		nodejs)
+			if is_version_at_least "${_install_version}" "16.0.0"; then
+				echo "https://nodejs.org/dist/v${_install_version}/node-v${_install_version}-darwin-arm64.tar.gz"
+			else
+				echo ""
+			fi ;;
 		opencode)
 			if is_version_at_least "${_install_version}" "2"; then
 				echo "https://opencode.ai/files/bin/${_install_version}/opencode-darwin-arm64.zip"
