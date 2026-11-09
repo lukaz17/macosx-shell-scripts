@@ -22,35 +22,38 @@
 #
 ################################################################################
 
-set -ex
+set -e
 
 # Application info
-GITHUB_OWNER="microsoft"
-GITHUB_REPO="vscode"
 PROGRAM_ID="vscode"
 PROGRAM_EXEC="Visual Studio Code.app"
 
 # Shared library
-CTXDIR="$(cd "$(dirname "$0")" && pwd)"
+CTXDIR="$(cd "$(dirname "${0}")" && pwd)"
 . "${CTXDIR}/shared/install-common.sh"
+. "${CTXDIR}/shared/install-source.sh"
 
 # Prepare environment
-get_install_version_from_github "${GITHUB_OWNER}" "${GITHUB_REPO}" "$1"
+get_install_argument "$@"
+GITHUB_OWNER="$(get_source_owner "${PROGRAM_ID}")"
+GITHUB_REPO="$(get_source_repo "${PROGRAM_ID}")"
+get_install_version_from_github "${GITHUB_OWNER}" "${GITHUB_REPO}" "${INSTALL_ARG_VERSION}"
 init_install_env_desktop "${PROGRAM_ID}" "${INSTALL_VERSION}"
 
 # Download and install binaries
 if [ ! -d "${INSTALL_TARGET}" ]; then
-	BIN_ARCH_URI_AMD64="https://update.code.visualstudio.com/${INSTALL_VERSION}/darwin/stable"
-	BIN_ARCH_URI_ARM64="https://update.code.visualstudio.com/${INSTALL_VERSION}/darwin-arm64/stable"
-	BIN_ARCH_TMP_FILE="${TEMP_TARGET}.tar.gz"
+	BIN_ARCH_URI_AMD64="$(get_download_uri_amd64 "${PROGRAM_ID}" "${INSTALL_VERSION}")"
+	BIN_ARCH_URI_ARM64="$(get_download_uri_arm64 "${PROGRAM_ID}" "${INSTALL_VERSION}")"
+	BIN_ARCH_TMP_FILE="${TEMP_TARGET}.zip"
 	download_uri_per_arch "${BIN_ARCH_URI_AMD64}" "${BIN_ARCH_URI_ARM64}" "${BIN_ARCH_TMP_FILE}"
 	create_dir "${TEMP_TARGET}"
-	extract_archive "${BIN_ARCH_TMP_FILE}" "tar" "${TEMP_TARGET}"
+	extract_archive "${BIN_ARCH_TMP_FILE}" "zip" "${TEMP_TARGET}"
 	remove_item "${BIN_ARCH_TMP_FILE}"
-	move_item_overwrite "${TEMP_TARGET}" "${INSTALL_TARGET}"
+	move_item "${TEMP_TARGET}" "${INSTALL_TARGET}"
 	remove_item "${TEMP_TARGET}"
 fi
 
 # Finalize install
 copy_item_overwrite "${INSTALL_TARGET}" "${ACTIVE_TARGET}"
 symlink_item_overwrite "${ACTIVE_TARGET}/${PROGRAM_EXEC}" "${DESKTOP_ROOT}/${PROGRAM_EXEC}"
+finalize_install

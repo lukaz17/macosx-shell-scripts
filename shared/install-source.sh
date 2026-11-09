@@ -26,6 +26,7 @@ get_source_owner() {
 		opencode) echo "anomalyco" ;;
 		pnpm) echo "pnpm" ;;
 		uv) echo "astral-sh" ;;
+		vscode) echo "microsoft" ;;
 		*) echo "" ;;
 	esac
 }
@@ -44,6 +45,7 @@ get_source_repo() {
 		opencode) echo "opencode" ;;
 		pnpm) echo "pnpm" ;;
 		uv) echo "uv" ;;
+		vscode) echo "vscode" ;;
 		*) echo "" ;;
 	esac
 }
@@ -79,6 +81,8 @@ get_download_uri_amd64() {
 			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-x86_64-apple-darwin.tar.gz" ;;
+		vscode)
+			echo "https://update.code.visualstudio.com/${_install_version}/darwin/stable" ;;
 		*) echo "" ;;
 	esac
 }
@@ -122,6 +126,8 @@ get_download_uri_arm64() {
 			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-aarch64-apple-darwin.tar.gz" ;;
+		vscode)
+			echo "https://update.code.visualstudio.com/${_install_version}/darwin-arm64/stable" ;;
 		*) echo "" ;;
 	esac
 }
