@@ -211,6 +211,28 @@ normalize_install_version() {
 }
 
 # ------------------------------------------------------------------------------
+# Extract the major version from a version string.
+# ------------------------------------------------------------------------------
+get_version_major() {
+	_version="${1}"
+	if [ -z "${_version}" ]; then
+		echo "get_version_major: Invalid arguments" >&2
+		return 1
+	fi
+
+	_version_core="${_version#v}"
+	_version_core="${_version_core%%-*}"
+	_major="${_version_core%%.*}"
+	case "${_major}" in
+		'' | *[!0-9]*)
+			echo "get_version_major: Invalid version: ${_version}" >&2
+			return 1
+			;;
+	esac
+	echo "${_major}"
+}
+
+# ------------------------------------------------------------------------------
 # Compare two versions, print -1, 0 or 1 when the first is older, equal or newer:
 # - Missing release parts count as 0: 2 = 2.0 = 2.0.0.
 # - A pre-release is older than its release: 2.0.0-beta.1 < 2.0.0, 1.27rc1 < 1.27.0.
