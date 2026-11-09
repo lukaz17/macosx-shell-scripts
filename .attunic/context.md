@@ -9,6 +9,11 @@ The reading and writing rules for this file and the rest of `.attunic/` are defi
 A newcomer should be able to tell what the software does without knowing what it is built with. One paragraph that describes the domain, not the technology, in simple terms:
 <!-- Project-specific / Abstract -->
 
+Collection of installers and utility scripts for macOS, written in Shell.
+
+- The installer scripts automate the process of querying the new version, downloading and extracting open-source software.
+- The utility scripts automate the common repetitive tasks with configurable parameters.
+
 ## Technical Specifications
 
 A brief overview of the ingredients developers of this project should know.
@@ -18,6 +23,12 @@ Write one bullet per ingredient, as `- <Ingredient>: <value>.`, such as primary 
 Write `None` as the value of an ingredient the project lacks but an agent would look for, such as a build system, test runner, or linter.
 
 <!-- Project-specific / Technical Specifications -->
+
+- Language: Shell (POSIX `/bin/sh`).
+- Framework: None.
+- Build system: None.
+- Test runner: None.
+- Linter: None.
 
 ## Layout
 
@@ -30,6 +41,23 @@ Write the list as a tree in a fenced block, one entry per line with its role as 
 When the list is not empty and a top-level file/folder is missing from it, prompt the user to update it.
 
 <!-- Project-specific / Layout -->
+- Top-level *-install scripts are an exception, it is not necessary to include all of them in the Layout.
+
+```
+├── .agents/                  # project AI agent instructions (attunic protocol, coding-conventions, development-guideline, pull-request-guideline)
+├── .attunic/                 # project AI agent memory (context, memory, question)
+├── shared/                   # support libraries sourced by top-level scripts
+│   ├── install-common.sh     # installer script shared functions: safe file ops, version lookup, install env initialization, per-arch download, extraction, finalization
+│   └── install-source.sh     # installer script download sources per Program ID and CPU architecture
+├── .copier-answers.yml       # project Copier answers
+├── .editorconfig             # editor formatting rules
+├── .gitignore                # git ignore patterns
+├── AGENTS.md                 # AI agent entry point
+├── CLAUDE.md                 # Claude Code entry point, imports AGENTS.md
+├── LICENSE                   # project license (MIT)
+├── README.md                 # project README
+└── *                         # top-level scripts
+```
 
 ## Layer Dependencies
 

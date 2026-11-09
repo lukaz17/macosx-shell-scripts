@@ -27,6 +27,7 @@ When writing code, follow these rules:
 - Never silence a linter, type checker, compiler warning, or test to get a clean run; fix the cause, or add a narrowly scoped suppression with a *why* comment.
 - Never hand-edit generated files or lockfiles; change their source or use the tool that owns them, then regenerate.
 <!-- Project-specific / Writing -->
+- Create the top-level script with the executable bit set (git mode 100755); only `shared/` libraries may be non-executable.
 
 ## Security
 
@@ -51,6 +52,8 @@ When fixing issues, follow these rules:
 - Write a test that reproduces the bug first, watch it fail, then make it pass.
 - Search for the same defect elsewhere and report other occurrences; fix them only when the task covers them.
 <!-- Project-specific / Fixing -->
+- For fixing: reproduce by running the failing script, capture and quote its output, fix, then re-run the same invocation and quote the passing result. There is no test or testing framework.
+- For refactoring, run the touched script(s) before and after; behavior must not change.
 
 ## Refactoring
 
@@ -138,6 +141,9 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Unchecked `cd`: a `cd` whose failure goes unnoticed, so later commands run against the wrong files => check it (`cd "$dir" || exit 1`).
 - Monolithic script: hundreds of lines with no functions and no `main` => split the logic into functions called from one `main "$@"`.
 <!-- Project-specific / Shell-Common Mistakes -->
+- Positional arguments usage in body: a positional parameter (`$1`, `${2}`) referenced anywhere inside a function body, instead of being bound to an `_`-prefixed name at the top.
+- Missing script usage and strict guard: a top-level script whose top lacks the banner comment or a `set` guard.
+- Unexecutable script: a script nowhere `$PATH`-invokable: a top-level script missing the executable bit.
 
 ## Checklist
 

@@ -15,6 +15,7 @@ When a language's established idiom contradicts a principle below, follow the id
 - Keep related things close: local declarations near first use, callers near callees.
 - Never pad comments or docs outside quoted text with filler (e.g. `simply`, `really`, `in order to`), meaningless words, or a sentence restating the one before it.
 <!-- Project-specific / Formats -->
+- Start top-level scripts with a standard banner comment block: program name, purpose, prerequisites if any, `Usage:`, `Example:`, then the MIT license block; see any existing script, consistency matters more than wording.
 
 ### Names
 
@@ -88,6 +89,7 @@ The rules below assume Bash. In a POSIX `sh` script (`#!/bin/sh`), use `[ ]` ins
 ### Shell-Formats
 
 <!-- Project-specific / Shell-Formats -->
+- Let EditorConfig format layout per `.editorconfig`: tabs for indent, LF, UTF-8, final newline.
 
 ### Shell-Names
 
@@ -114,6 +116,9 @@ The rules below assume Bash. In a POSIX `sh` script (`#!/bin/sh`), use `[ ]` ins
 - Keep a function to one job; parsing arguments, doing the work, and printing a report is three functions.
 - Pass data through arguments and exit status, not through a global a sibling function set earlier.
 <!-- Project-specific / Shell-Functions -->
+- Open every function body by binding its positional parameters: one argument per line, `_name="${1}"`, `_name="${2}"`,... before any other statement; use only those `_` names afterward — never reference `$1`, `${2}`,... directly inside a function.
+- Keep an installer script a linear top-level flow calling shared-library functions; wrap an application's logic in functions only where the script itself owns it.
+- Prefix a function-local variable with `_` (`_path`) so it visibly belongs to the function; pass state up via documented uppercase globals (`INSTALL_VERSION`, `INSTALL_TARGET`) — POSIX sh has no `local`.
 
 ### Shell-Comments
 
@@ -127,6 +132,8 @@ The rules below assume Bash. In a POSIX `sh` script (`#!/bin/sh`), use `[ ]` ins
 - Use `trap 'cleanup' EXIT` (and `INT`/`TERM` when the script holds a lock or a temp file) so cleanup runs on every exit path.
 - Never swallow a failure with `2>/dev/null` alone; redirect, then act on the exit status, or let the error surface.
 <!-- Project-specific / Shell-Errors -->
+- Use an `echo "> Label:   value"` status line as the CLI progress channel; a failure message goes to stderr as `Error: ...` or `<function>: Invalid arguments`.
+- Set `set -e` at the start of the script; POSIX sh has no `pipefail`, so make a pipeline's error path explicit instead.
 
 ### Shell-Concurrency
 
