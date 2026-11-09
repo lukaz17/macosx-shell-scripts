@@ -18,6 +18,7 @@ set +x
 get_source_owner() {
 	_program_id="${1}"
 	case "${_program_id}" in
+		bun) echo "oven-sh" ;;
 		localai) echo "mudler" ;;
 		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
@@ -32,6 +33,7 @@ get_source_owner() {
 get_source_repo() {
 	_program_id="${1}"
 	case "${_program_id}" in
+		bun) echo "bun" ;;
 		localai) echo "LocalAI" ;;
 		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
@@ -47,6 +49,8 @@ get_download_uri_amd64() {
 	_program_id="${1}"
 	_install_version="${2}"
 	case "${_program_id}" in
+		bun)
+			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-x64.zip" ;;
 		localai)
 			echo "" ;;
 		nodejs)
@@ -70,6 +74,8 @@ get_download_uri_arm64() {
 	_program_id="${1}"
 	_install_version="${2}"
 	case "${_program_id}" in
+		bun)
+			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-aarch64.zip" ;;
 		localai)
 			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
 		nodejs)
