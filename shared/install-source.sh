@@ -16,7 +16,8 @@ set +x
 # Return the GitHub owner for a Program ID.
 # ------------------------------------------------------------------------------
 get_source_owner() {
-	case "$1" in
+	_program_id="${1}"
+	case "${_program_id}" in
 		localai) echo "mudler" ;;
 		opencode) echo "anomalyco" ;;
 		uv) echo "astral-sh" ;;
@@ -28,7 +29,8 @@ get_source_owner() {
 # Return the GitHub repository for a Program ID.
 # ------------------------------------------------------------------------------
 get_source_repo() {
-	case "$1" in
+	_program_id="${1}"
+	case "${_program_id}" in
 		localai) echo "LocalAI" ;;
 		opencode) echo "opencode" ;;
 		uv) echo "uv" ;;
@@ -40,13 +42,15 @@ get_source_repo() {
 # Return the download URI for AMD64 for a Program ID.
 # ------------------------------------------------------------------------------
 get_download_uri_amd64() {
-	case "$1" in
+	_program_id="${1}"
+	_install_version="${2}"
+	case "${_program_id}" in
 		localai)
 			echo "" ;;
 		opencode)
-			echo "https://github.com/anomalyco/opencode/releases/download/v${2}/opencode-darwin-x64.zip" ;;
+			echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-x64.zip" ;;
 		uv)
-			echo "https://github.com/astral-sh/uv/releases/download/${2}/uv-x86_64-apple-darwin.tar.gz" ;;
+			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-x86_64-apple-darwin.tar.gz" ;;
 		*) echo "" ;;
 	esac
 }
@@ -55,13 +59,15 @@ get_download_uri_amd64() {
 # Return the download URI for ARM64 for a Program ID.
 # ------------------------------------------------------------------------------
 get_download_uri_arm64() {
-	case "$1" in
+	_program_id="${1}"
+	_install_version="${2}"
+	case "${_program_id}" in
 		localai)
-			echo "https://github.com/mudler/LocalAI/releases/download/v${2}/local-ai-v${2}-darwin-arm64" ;;
+			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
 		opencode)
-			echo "https://github.com/anomalyco/opencode/releases/download/v${2}/opencode-darwin-arm64.zip" ;;
+			echo "https://github.com/anomalyco/opencode/releases/download/v${_install_version}/opencode-darwin-arm64.zip" ;;
 		uv)
-			echo "https://github.com/astral-sh/uv/releases/download/${2}/uv-aarch64-apple-darwin.tar.gz" ;;
+			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-aarch64-apple-darwin.tar.gz" ;;
 		*) echo "" ;;
 	esac
 }
