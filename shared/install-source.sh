@@ -19,6 +19,7 @@ get_source_owner() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		bun) echo "oven-sh" ;;
+		firefox) echo "" ;;
 		foundry) echo "foundry-rs" ;;
 		go) echo "" ;;
 		localai) echo "mudler" ;;
@@ -38,6 +39,7 @@ get_source_repo() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		bun) echo "bun" ;;
+		firefox) echo "" ;;
 		foundry) echo "foundry" ;;
 		go) echo "" ;;
 		localai) echo "LocalAI" ;;
@@ -59,6 +61,8 @@ get_download_uri_amd64() {
 	case "${_program_id}" in
 		bun)
 			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-x64.zip" ;;
+		firefox)
+			echo "https://ftp.mozilla.org/pub/firefox/releases/${_install_version}/mac/en-US/Firefox%20${_install_version}.dmg" ;;
 		foundry)
 			echo "https://github.com/foundry-rs/foundry/releases/download/v${_install_version}/foundry_v${_install_version}_darwin_amd64.tar.gz" ;;
 		go)
@@ -96,6 +100,8 @@ get_download_uri_arm64() {
 	case "${_program_id}" in
 		bun)
 			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-aarch64.zip" ;;
+		firefox)
+			echo "https://ftp.mozilla.org/pub/firefox/releases/${_install_version}/mac/en-US/Firefox%20${_install_version}.dmg" ;;
 		foundry)
 			echo "https://github.com/foundry-rs/foundry/releases/download/v${_install_version}/foundry_v${_install_version}_darwin_arm64.tar.gz" ;;
 		go)
