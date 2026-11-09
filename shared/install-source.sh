@@ -19,6 +19,7 @@ get_source_owner() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		bun) echo "oven-sh" ;;
+		foundry) echo "foundry-rs" ;;
 		localai) echo "mudler" ;;
 		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
@@ -35,6 +36,7 @@ get_source_repo() {
 	_program_id="${1}"
 	case "${_program_id}" in
 		bun) echo "bun" ;;
+		foundry) echo "foundry" ;;
 		localai) echo "LocalAI" ;;
 		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
@@ -53,6 +55,8 @@ get_download_uri_amd64() {
 	case "${_program_id}" in
 		bun)
 			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-x64.zip" ;;
+		foundry)
+			echo "https://github.com/foundry-rs/foundry/releases/download/v${_install_version}/foundry_v${_install_version}_darwin_amd64.tar.gz" ;;
 		localai)
 			echo "" ;;
 		nodejs)
@@ -84,6 +88,8 @@ get_download_uri_arm64() {
 	case "${_program_id}" in
 		bun)
 			echo "https://github.com/oven-sh/bun/releases/download/bun-v${_install_version}/bun-darwin-aarch64.zip" ;;
+		foundry)
+			echo "https://github.com/foundry-rs/foundry/releases/download/v${_install_version}/foundry_v${_install_version}_darwin_arm64.tar.gz" ;;
 		localai)
 			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
 		nodejs)
