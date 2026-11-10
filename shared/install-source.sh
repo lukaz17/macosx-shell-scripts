@@ -27,6 +27,7 @@ get_source_owner() {
 		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
 		pnpm) echo "pnpm" ;;
+		tabby) echo "Eugeny" ;;
 		telegram) echo "telegramdesktop" ;;
 		uv) echo "astral-sh" ;;
 		vscode) echo "microsoft" ;;
@@ -50,6 +51,7 @@ get_source_repo() {
 		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
 		pnpm) echo "pnpm" ;;
+		tabby) echo "tabby" ;;
 		telegram) echo "tdesktop" ;;
 		uv) echo "uv" ;;
 		vscode) echo "vscode" ;;
@@ -91,6 +93,8 @@ get_download_uri_amd64() {
 			else
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-macos-x64"
 			fi ;;
+		tabby)
+			echo "https://github.com/Eugeny/tabby/releases/download/v${_install_version}/tabby-${_install_version}-macos-x86_64.dmg" ;;
 		telegram)
 			if is_version_at_least "${_install_version}" "7.2.6"; then
 				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/td-setup-mac-${_install_version}.dmg"
@@ -148,6 +152,8 @@ get_download_uri_arm64() {
 			else
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-macos-arm64"
 			fi ;;
+		tabby)
+			echo "https://github.com/Eugeny/tabby/releases/download/v${_install_version}/tabby-${_install_version}-macos-arm64.dmg" ;;
 		telegram)
 			if is_version_at_least "${_install_version}" "7.2.6"; then
 				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/td-setup-mac-${_install_version}.dmg"
