@@ -497,13 +497,15 @@ extract_archive() {
 
 	echo "> Extract Arch: ${_archive_file} -> ${_destination_dir}"
 	if [ "${_archive_type}" = "dmg" ] || [ "${_archive_type}" = "DMG" ]; then
-		MOUNT_POINT="/Volumes/CLI Auto Install"
-		echo "> Mount Dmg:    ${BIN_ARCH_TMP_FILE}"
-		hdiutil attach -mountpoint "${MOUNT_POINT}" "${BIN_ARCH_TMP_FILE}"
-		copy_item "${MOUNT_POINT}/${PROGRAM_EXEC}" "${TEMP_TARGET}"
-		hdiutil detach "${MOUNT_POINT}"
-		echo "> Unmount Dmg:  ${BIN_ARCH_TMP_FILE}"
-		xattr -cr "${TEMP_TARGET}"
+		_mount_point="/Volumes/CLI Auto Install"
+		echo "> Mount Dmg:    ${_archive_file}"
+		hdiutil attach -mountpoint "${_mount_point}" "${_archive_file}"
+		for _app_file in "${_mount_point}"/*.app; do
+			copy_item "${_app_file}" "${_destination_dir}"
+		done
+		hdiutil detach "${_mount_point}"
+		echo "> Unmount Dmg:  ${_archive_file}"
+		xattr -cr "${_destination_dir}"
 	elif [ "${_archive_type}" = "pkg" ] || [ "${_archive_type}" = "PKG" ]; then
 		remove_item "${_destination_dir}"
 		pkgutil --expand-full "${_archive_file}" "${_destination_dir}"
