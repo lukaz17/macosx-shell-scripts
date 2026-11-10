@@ -22,6 +22,7 @@ get_source_owner() {
 		firefox) echo "" ;;
 		foundry) echo "foundry-rs" ;;
 		go) echo "" ;;
+		hugo) echo "gohugoio" ;;
 		localai) echo "mudler" ;;
 		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
@@ -43,6 +44,7 @@ get_source_repo() {
 		firefox) echo "" ;;
 		foundry) echo "foundry" ;;
 		go) echo "" ;;
+		hugo) echo "hugo" ;;
 		localai) echo "LocalAI" ;;
 		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
@@ -69,6 +71,8 @@ get_download_uri_amd64() {
 			echo "https://github.com/foundry-rs/foundry/releases/download/v${_install_version}/foundry_v${_install_version}_darwin_amd64.tar.gz" ;;
 		go)
 			echo "https://go.dev/dl/go${_install_version}.darwin-amd64.tar.gz" ;;
+		hugo)
+			echo "https://github.com/gohugoio/hugo/releases/download/v${_install_version}/hugo_extended_withdeploy_${_install_version}_darwin-universal.pkg" ;;
 		localai)
 			echo "" ;;
 		nodejs)
@@ -114,6 +118,8 @@ get_download_uri_arm64() {
 			else
 				echo ""
 			fi ;;
+		hugo)
+			echo "https://github.com/gohugoio/hugo/releases/download/v${_install_version}/hugo_extended_withdeploy_${_install_version}_darwin-universal.pkg" ;;
 		localai)
 			echo "https://github.com/mudler/LocalAI/releases/download/v${_install_version}/local-ai-v${_install_version}-darwin-arm64" ;;
 		nodejs)
