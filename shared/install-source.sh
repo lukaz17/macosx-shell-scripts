@@ -27,6 +27,7 @@ get_source_owner() {
 		nodejs) echo "" ;;
 		opencode) echo "anomalyco" ;;
 		pnpm) echo "pnpm" ;;
+		telegram) echo "telegramdesktop" ;;
 		uv) echo "astral-sh" ;;
 		vscode) echo "microsoft" ;;
 		waterfox) echo "BrowserWorks" ;;
@@ -49,6 +50,7 @@ get_source_repo() {
 		nodejs) echo "" ;;
 		opencode) echo "opencode" ;;
 		pnpm) echo "pnpm" ;;
+		telegram) echo "tdesktop" ;;
 		uv) echo "uv" ;;
 		vscode) echo "vscode" ;;
 		waterfox) echo "waterfox" ;;
@@ -88,6 +90,12 @@ get_download_uri_amd64() {
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-darwin-x64.tar.gz"
 			else
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-macos-x64"
+			fi ;;
+		telegram)
+			if is_version_at_least "${_install_version}" "7.2.6"; then
+				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/td-setup-mac-${_install_version}.dmg"
+			else
+				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/tsetup.${_install_version}.dmg"
 			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-x86_64-apple-darwin.tar.gz" ;;
@@ -139,6 +147,12 @@ get_download_uri_arm64() {
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-darwin-arm64.tar.gz"
 			else
 				echo "https://github.com/pnpm/pnpm/releases/download/v${_install_version}/pnpm-macos-arm64"
+			fi ;;
+		telegram)
+			if is_version_at_least "${_install_version}" "7.2.6"; then
+				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/td-setup-mac-${_install_version}.dmg"
+			else
+				echo "https://github.com/telegramdesktop/tdesktop/releases/download/v${_install_version}/tsetup.${_install_version}.dmg"
 			fi ;;
 		uv)
 			echo "https://github.com/astral-sh/uv/releases/download/${_install_version}/uv-aarch64-apple-darwin.tar.gz" ;;
